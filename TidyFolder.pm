@@ -25,7 +25,7 @@ sub find_files_matching_sub {
 		my $cur_dir = $_;
 		if ( chdir $cur_dir ) {
 			foreach ( glob('.* *') ) {
-				if ( -f $_ ) {
+				if ( -f $_ || -d $_) {
 					my $matching_file = &$criteria_sub( $_, $cur_dir );
 					if ($matching_file) {
 						push @files, $matching_file;
@@ -127,7 +127,7 @@ sub find_conflict_files {
 			if ( $file =~ /(.+)\[Conflict\](.*)/ ) {
 				my $origingl_file = "$1$2";
 
-				if ( -f $origingl_file ) {
+				if ( -f $origingl_file || -d $origingl_file) {
 					return "$cur_dir/$file";
 				}
 			}
@@ -148,7 +148,7 @@ sub find_bracket_number_files {
 			if ( $file =~ /(.+?)\s*\(\d+\)(.*)/ ) {
 				my $origingl_file = "$1$2";
 
-				if ( -f $origingl_file ) {
+				if ( -f $origingl_file || -d $origingl_file) {
 					return "$cur_dir/$file";
 				}
 			}
