@@ -13,6 +13,7 @@ use TidyFolder qw(
 	find_superfluous_ut_files
 	find_numbered_torrent_files
 	find_ms_office_temporary_files
+	find_conflict_files
 );
 
 my $man = 0;
@@ -45,6 +46,8 @@ given ($type_of_files) {
 		@files = find_numbered_torrent_files($directory);
 	} when ('ms_office_temporary') {
 		@files = find_ms_office_temporary_files($directory);
+	} when ('conflict') {
+		@files = find_conflict_files($directory);
 	} default {
 		warn "Unrecognised type of file!\n";
 		pod2usage(-exitstatus => 0, -verbose => 2) if $man;
