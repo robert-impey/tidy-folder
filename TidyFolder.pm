@@ -145,7 +145,7 @@ sub find_bracket_number_files {
 			my $file    = shift;
 			my $cur_dir = shift;
 
-			if ( $file =~ /(.+)\(\d+\)(.*)/ ) {
+			if ( $file =~ /(.+?)\s*\(\d+\)(.*)/ ) {
 				my $origingl_file = "$1$2";
 
 				if ( -f $origingl_file ) {
