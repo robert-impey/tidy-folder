@@ -12,6 +12,7 @@ our @EXPORT_OK = qw(
   find_numbered_torrent_files
   find_ms_office_temporary_files
   find_conflict_files
+  find_bracket_number_files
 );
 
 sub find_files_matching_sub {
@@ -123,7 +124,28 @@ sub find_conflict_files {
 			my $file    = shift;
 			my $cur_dir = shift;
 
-			if ( $file =~ /(.+)\[Conflict\](.+)/ ) {
+			if ( $file =~ /(.+)\[Conflict\](.*)/ ) {
+				my $origingl_file = "$1$2";
+
+				if ( -f $origingl_file ) {
+					return "$cur_dir/$file";
+				}
+			}
+		}
+	);
+}
+
+sub find_bracket_number_files {
+
+	my $directory = shift;
+
+	return find_files_matching_sub(
+		$directory,
+		sub {
+			my $file    = shift;
+			my $cur_dir = shift;
+
+			if ( $file =~ /(.+)\(\d+\)(.*)/ ) {
 				my $origingl_file = "$1$2";
 
 				if ( -f $origingl_file ) {

@@ -14,7 +14,7 @@ use TidyFolder qw(
   find_numbered_torrent_files
   find_ms_office_temporary_files
   find_conflict_files
-);
+  find_bracket_number_files);
 
 my $man  = 0;
 my $help = 0;
@@ -52,6 +52,9 @@ given ($type_of_files) {
 	}
 	when ('conflict') {
 		@files = find_conflict_files($directory);
+	}
+	when ('bracket_number') {
+		@files = find_bracket_number_files($directory);
 	}
 	default {
 		warn "Unrecognised type of file!\n";
