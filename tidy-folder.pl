@@ -9,62 +9,75 @@ use feature "switch";
 use File::Path;
 
 use TidyFolder qw(
-	find_rsync_temporary_files
-	find_superfluous_ut_files
-	find_numbered_torrent_files
-	find_ms_office_temporary_files
-);
+  find_rsync_temporary_files
+  find_superfluous_ut_files
+  find_numbered_torrent_files
+  find_ms_office_temporary_files
+  find_conflict_files
+  find_bracket_number_files);
 
-my $man = 0;
+my $man  = 0;
 my $help = 0;
 
-my ($directory, $type_of_files, $delete);
+my ( $directory, $type_of_files, $delete );
 
 $directory = '.';
-$delete = 0;
+$delete    = 0;
 
 GetOptions(
-    'd|directory:s' => \$directory,
+	'd|directory:s'     => \$directory,
 	't|type-of-files:s' => \$type_of_files,
-	'delete' => \$delete,
-    'help|?' => \$help,
-	man => \$man
+	'delete'            => \$delete,
+	'help|?'            => \$help,
+	man                 => \$man
 ) or pod2usage(2);
 
 pod2usage(1) if $help;
-pod2usage(-exitstatus => 0, -verbose => 2) if $man;
+pod2usage( -exitstatus => 0, -verbose => 2 ) if $man;
 
 my @files;
 
 given ($type_of_files) {
 	when ('rsync_temporary') {
 		@files = find_rsync_temporary_files($directory);
-	} when ('superfluous_ut') {
+	}
+	when ('superfluous_ut') {
 		@files = find_superfluous_ut_files($directory);
-	} when ('numbered_torrent') {
+	}
+	when ('numbered_torrent') {
 		@files = find_numbered_torrent_files($directory);
-	} when ('ms_office_temporary') {
+	}
+	when ('ms_office_temporary') {
 		@files = find_ms_office_temporary_files($directory);
-	} default {
+	}
+	when ('conflict') {
+		@files = find_conflict_files($directory);
+	}
+	when ('bracket_number') {
+		@files = find_bracket_number_files($directory);
+	}
+	default {
 		warn "Unrecognised type of file!\n";
-		pod2usage(-exitstatus => 0, -verbose => 2) if $man;
+		pod2usage( -exitstatus => 0, -verbose => 2 ) if $man;
 	}
 }
 
-if (scalar(@files)) {
-    print join "\n", sort(@files), "\n";
-	
+if ( scalar(@files) ) {
+	print join "\n", sort(@files), "\n";
+
 	if ($delete) {
 		foreach my $file (@files) {
-			if (-f $file) {
+			if ( -f $file ) {
 				unlink $file;
-			} elsif (-d $file) {
+			}
+			elsif ( -d $file ) {
 				rmtree($file);
-			} else {
+			}
+			else {
 				warn "Unable to delete $file!\n";
 			}
 		}
-		
+
 		print "Deleted!\n";
 	}
 }
