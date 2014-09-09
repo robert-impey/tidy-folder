@@ -19,17 +19,19 @@ use TidyFolder qw(
 my $man  = 0;
 my $help = 0;
 
-my ( $directory, $type_of_files, $delete );
+my ( $directory, $type_of_files, $delete, $print0 );
 
 $directory = '.';
+$print0 = 0;
 $delete    = 0;
 
 GetOptions(
 	'd|directory:s'     => \$directory,
 	't|type-of-files:s' => \$type_of_files,
-	'delete'            => \$delete,
-	'help|?'            => \$help,
-	man                 => \$man
+	'delete'	    => \$delete,
+	'print0'	=> \$print0,
+	'help|?'	    => \$help,
+	man		 => \$man
 ) or pod2usage(2);
 
 pod2usage(1) if $help;
@@ -63,7 +65,9 @@ given ($type_of_files) {
 }
 
 if ( scalar(@files) ) {
-	print join "\n", sort(@files), "\n";
+	my $separator = $print0 ? "\0" : "\n";
+
+	print join $separator, sort(@files), "\n";
 
 	if ($delete) {
 		foreach my $file (@files) {
@@ -95,8 +99,8 @@ __END__
 		-d|directory		The directory to search
 		-t|type-of-files	The type of files
 		--delete			Delete the found files
-		-help            	brief help message
-		-man             	full documentation
+		-help	    	brief help message
+		-man	     	full documentation
 
 =head1 OPTIONS
 
