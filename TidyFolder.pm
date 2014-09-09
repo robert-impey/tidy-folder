@@ -124,7 +124,7 @@ sub find_conflict_files {
 			my $file    = shift;
 			my $cur_dir = shift;
 
-			if ( $file =~ /(.+)\[Conflict\](.*)/ ) {
+			if ( $file =~ /(.+)\[Conflict(?: \d+)?\](.*)/ ) {
 				my $origingl_file = "$1$2";
 
 				if ( -f $origingl_file || -d $origingl_file) {
