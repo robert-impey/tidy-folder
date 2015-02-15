@@ -5,7 +5,6 @@ use warnings;
 
 use Getopt::Long;
 use Pod::Usage;
-use feature "switch";
 use File::Path;
 
 use TidyFolder qw(
@@ -22,16 +21,16 @@ my $help = 0;
 my ( $directory, $type_of_files, $delete, $print0 );
 
 $directory = '.';
-$print0 = 0;
+$print0    = 0;
 $delete    = 0;
 
 GetOptions(
-	'd|directory:s'     => \$directory,
-	't|type-of-files:s' => \$type_of_files,
-	'delete'	    => \$delete,
-	'print0'	=> \$print0,
-	'help|?'	    => \$help,
-	man		 => \$man
+			'd|directory:s'     => \$directory,
+			't|type-of-files:s' => \$type_of_files,
+			'delete'            => \$delete,
+			'print0'            => \$print0,
+			'help|?'            => \$help,
+			man                 => \$man
 ) or pod2usage(2);
 
 pod2usage(1) if $help;
@@ -39,29 +38,21 @@ pod2usage( -exitstatus => 0, -verbose => 2 ) if $man;
 
 my @files;
 
-given ($type_of_files) {
-	when ('rsync_temporary') {
-		@files = find_rsync_temporary_files($directory);
-	}
-	when ('superfluous_ut') {
-		@files = find_superfluous_ut_files($directory);
-	}
-	when ('numbered_torrent') {
-		@files = find_numbered_torrent_files($directory);
-	}
-	when ('ms_office_temporary') {
-		@files = find_ms_office_temporary_files($directory);
-	}
-	when ('conflict') {
-		@files = find_conflict_files($directory);
-	}
-	when ('bracket_number') {
-		@files = find_bracket_number_files($directory);
-	}
-	default {
-		warn "Unrecognised type of file!\n";
-		pod2usage( -exitstatus => 0, -verbose => 2 ) if $man;
-	}
+if ( $type_of_files eq 'rsync_temporary' ) {
+	@files = find_rsync_temporary_files($directory);
+} elsif ( $type_of_files eq 'superfluous_ut' ) {
+	@files = find_superfluous_ut_files($directory);
+} elsif ( $type_of_files eq 'numbered_torrent' ) {
+	@files = find_numbered_torrent_files($directory);
+} elsif ( $type_of_files eq 'ms_office_temporary' ) {
+	@files = find_ms_office_temporary_files($directory);
+} elsif ( $type_of_files eq 'conflict' ) {
+	@files = find_conflict_files($directory);
+} elsif ( $type_of_files eq 'bracket_number' ) {
+	@files = find_bracket_number_files($directory);
+} else {
+	warn "Unrecognised type of file!\n";
+	pod2usage( -exitstatus => 0, -verbose => 2 ) if $man;
 }
 
 if ( scalar(@files) ) {
@@ -73,11 +64,9 @@ if ( scalar(@files) ) {
 		foreach my $file (@files) {
 			if ( -f $file ) {
 				unlink $file;
-			}
-			elsif ( -d $file ) {
+			} elsif ( -d $file ) {
 				rmtree($file);
-			}
-			else {
+			} else {
 				warn "Unable to delete $file!\n";
 			}
 		}
