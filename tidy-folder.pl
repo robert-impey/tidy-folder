@@ -113,6 +113,10 @@ Possibly:
 
 Delete the files that match the criteria.
 
+=item B<--print0>
+
+Print the file names separated by NUL for xargs -0.
+
 =item B<-help>
 
 Print a brief help message and exits.
