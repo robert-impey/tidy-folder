@@ -58,7 +58,9 @@ if ( $type_of_files eq 'rsync_temporary' ) {
 if ( scalar(@files) ) {
 	my $separator = $print0 ? "\0" : "\n";
 
-	print join $separator, sort(@files), "\n";
+	print join $separator, sort(@files);
+    
+    print "\n" unless $print0;
 
 	if ($delete) {
 		foreach my $file (@files) {
