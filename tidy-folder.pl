@@ -8,12 +8,13 @@ use Pod::Usage;
 use File::Path;
 
 use TidyFolder qw(
-  find_rsync_temporary_files
-  find_superfluous_ut_files
-  find_numbered_torrent_files
-  find_ms_office_temporary_files
-  find_conflict_files
-  find_bracket_number_files);
+find_rsync_temporary_files
+find_superfluous_ut_files
+find_numbered_torrent_files
+find_ms_office_temporary_files
+find_conflict_files
+find_bracket_number_files
+find_unicode_encoding_conflict_files);
 
 my $man  = 0;
 my $help = 0;
@@ -25,12 +26,12 @@ $print0    = 0;
 $delete    = 0;
 
 GetOptions(
-			'd|directory:s'     => \$directory,
-			't|type-of-files:s' => \$type_of_files,
-			'delete'            => \$delete,
-			'print0'            => \$print0,
-			'help|?'            => \$help,
-			man                 => \$man
+    'd|directory:s'     => \$directory,
+    't|type-of-files:s' => \$type_of_files,
+    'delete'            => \$delete,
+    'print0'            => \$print0,
+    'help|?'            => \$help,
+    man                 => \$man
 ) or pod2usage(2);
 
 pod2usage(1) if $help;
@@ -39,42 +40,44 @@ pod2usage( -exitstatus => 0, -verbose => 2 ) if $man;
 my @files;
 
 if ( $type_of_files eq 'rsync_temporary' ) {
-	@files = find_rsync_temporary_files($directory);
+    @files = find_rsync_temporary_files($directory);
 } elsif ( $type_of_files eq 'superfluous_ut' ) {
-	@files = find_superfluous_ut_files($directory);
+    @files = find_superfluous_ut_files($directory);
 } elsif ( $type_of_files eq 'numbered_torrent' ) {
-	@files = find_numbered_torrent_files($directory);
+    @files = find_numbered_torrent_files($directory);
 } elsif ( $type_of_files eq 'ms_office_temporary' ) {
-	@files = find_ms_office_temporary_files($directory);
+    @files = find_ms_office_temporary_files($directory);
 } elsif ( $type_of_files eq 'conflict' ) {
-	@files = find_conflict_files($directory);
+    @files = find_conflict_files($directory);
 } elsif ( $type_of_files eq 'bracket_number' ) {
-	@files = find_bracket_number_files($directory);
+    @files = find_bracket_number_files($directory);
+} elsif ( $type_of_files eq 'unicode_encoding_conflict' ) {
+    @files = find_unicode_encoding_conflict_files($directory);
 } else {
-	warn "Unrecognised type of file!\n";
-	pod2usage( -exitstatus => 0, -verbose => 2 ) if $man;
+    warn "Unrecognised type of file!\n";
+    pod2usage( -exitstatus => 0, -verbose => 2 ) if $man;
 }
 
 if ( scalar(@files) ) {
-	my $separator = $print0 ? "\0" : "\n";
+    my $separator = $print0 ? "\0" : "\n";
 
-	print join $separator, sort(@files);
-    
+    print join $separator, sort(@files);
+
     print "\n" unless $print0;
 
-	if ($delete) {
-		foreach my $file (@files) {
-			if ( -f $file ) {
-				unlink $file;
-			} elsif ( -d $file ) {
-				rmtree($file);
-			} else {
-				warn "Unable to delete $file!\n";
-			}
-		}
+    if ($delete) {
+        foreach my $file (@files) {
+            if ( -f $file ) {
+                unlink $file;
+            } elsif ( -d $file ) {
+                rmtree($file);
+            } else {
+                warn "Unable to delete $file!\n";
+            }
+        }
 
-		print "Deleted!\n";
-	}
+        print "Deleted!\n";
+    }
 }
 
 __END__
@@ -87,11 +90,11 @@ __END__
 
     tidy-folder.pl -d C:\foo -t some_type
     Options:
-		-d|directory		The directory to search
-		-t|type-of-files	The type of files
-		--delete			Delete the found files
-		-help	    	brief help message
-		-man	     	full documentation
+        -d|directory		The directory to search
+        -t|type-of-files	The type of files
+        --delete			Delete the found files
+        -help	    	brief help message
+        -man	     	full documentation
 
 =head1 OPTIONS
 
@@ -106,11 +109,14 @@ The name of the directory to search.
 The type of files to search for.
 
 Possibly:
-	rsync_temporary
-	superfluous_ut
-	numbered_torrent
-	ms_office_temporary
-	
+    rsync_temporary
+    superfluous_ut
+    numbered_torrent
+    ms_office_temporary
+    conflict
+    bracket_number
+    unicode_encoding_conflict
+
 =item B<--delete>
 
 Delete the files that match the criteria.
