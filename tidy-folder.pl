@@ -13,6 +13,7 @@ find_superfluous_ut_files
 find_numbered_torrent_files
 find_ms_office_temporary_files
 find_conflict_files
+find_conflicted_copy_files
 find_bracket_number_files
 find_unicode_encoding_conflict_files);
 
@@ -49,6 +50,8 @@ if ( $type_of_files eq 'rsync_temporary' ) {
     @files = find_ms_office_temporary_files($directory);
 } elsif ( $type_of_files eq 'conflict' ) {
     @files = find_conflict_files($directory);
+} elsif ( $type_of_files eq 'conflicted_copy' ) {
+    @files = find_conflicted_copy_files($directory);
 } elsif ( $type_of_files eq 'bracket_number' ) {
     @files = find_bracket_number_files($directory);
 } elsif ( $type_of_files eq 'unicode_encoding_conflict' ) {

@@ -12,6 +12,7 @@ find_superfluous_ut_files
 find_numbered_torrent_files
 find_ms_office_temporary_files
 find_conflict_files
+find_conflicted_copy_files
 find_bracket_number_files
 find_unicode_encoding_conflict_files
 );
@@ -126,6 +127,26 @@ sub find_conflict_files {
             my $cur_dir = shift;
 
             if ( $file =~ /(.+)\[Conflict(?: \d+)?\](.*)/ ) {
+                my $origingl_file = "$1$2";
+
+                if ( -f $origingl_file || -d $origingl_file) {
+                    return "$cur_dir/$file";
+                }
+            }
+        }
+    );
+}
+# Created by Dropbox
+sub find_conflicted_copy_files {
+    my $directory = shift;
+
+    return find_files_matching_sub(
+        $directory,
+        sub {
+            my $file    = shift;
+            my $cur_dir = shift;
+
+            if ( $file =~ /(.+) \(\w+'s conflicted copy (?:\d{4}-\d{2}-\d{2})\)(.*)/ ) {
                 my $origingl_file = "$1$2";
 
                 if ( -f $origingl_file || -d $origingl_file) {
