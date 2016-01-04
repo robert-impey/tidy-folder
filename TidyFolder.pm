@@ -146,7 +146,7 @@ sub find_conflicted_copy_files {
             my $file    = shift;
             my $cur_dir = shift;
 
-            if ( $file =~ /(.+) \(\w+'s conflicted copy (?:\d{4}-\d{2}-\d{2})\)(.*)/ ) {
+            if ( $file =~ /(.+) \(\w+'s conflicted copy (?:\d{4}-\d{2}-\d{2})(?:\s*\(\d+\))?\)(.*)/ ) {
                 my $origingl_file = "$1$2";
 
                 if ( -f $origingl_file || -d $origingl_file) {
