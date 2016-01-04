@@ -44,6 +44,8 @@ sub find_files_matching_sub {
     return @files;
 }
 
+# Created by rsync
+# Left behind when two processes try to sync one directory.
 sub find_rsync_temporary_files {
     my $directory = shift;
 
@@ -62,6 +64,7 @@ sub find_rsync_temporary_files {
     );
 }
 
+# Created by UTorrent
 sub find_superfluous_ut_files {
     my $directory = shift;
 
@@ -80,6 +83,7 @@ sub find_superfluous_ut_files {
     );
 }
 
+# Created by deluge
 sub find_numbered_torrent_files {
     my $directory = shift;
 
@@ -98,6 +102,8 @@ sub find_numbered_torrent_files {
     );
 }
 
+# Left behind when synching a folder
+# with an open Microsoft Office file
 sub find_ms_office_temporary_files {
     my $directory = shift;
 
@@ -117,6 +123,7 @@ sub find_ms_office_temporary_files {
     );
 }
 
+# Dropbox
 sub find_conflict_files {
     my $directory = shift;
 
@@ -136,6 +143,7 @@ sub find_conflict_files {
         }
     );
 }
+
 # Created by Dropbox
 sub find_conflicted_copy_files {
     my $directory = shift;
@@ -178,6 +186,7 @@ sub find_bracket_number_files {
     );
 }
 
+# Created by Dropbox
 sub find_unicode_encoding_conflict_files {
     my $directory = shift;
 
