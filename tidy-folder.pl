@@ -27,16 +27,16 @@ $print0    = 0;
 $delete    = 0;
 
 GetOptions(
-    'd|directory:s'     => \$directory,
-    't|type-of-files:s' => \$type_of_files,
+    'directory=s'     => \$directory,
+    'type-of-files=s' => \$type_of_files,
     'delete'            => \$delete,
     'print0'            => \$print0,
     'help|?'            => \$help,
     man                 => \$man
-) or pod2usage(2);
+); 
 
 pod2usage(1) if $help;
-pod2usage( -exitstatus => 0, -verbose => 2 ) if $man;
+pod2usage( -exitstatus => 0, -verbose => 2 ) if $man or !$type_of_files;
 
 my @files;
 
@@ -57,8 +57,7 @@ if ( $type_of_files eq 'rsync_temporary' ) {
 } elsif ( $type_of_files eq 'unicode_encoding_conflict' ) {
     @files = find_unicode_encoding_conflict_files($directory);
 } else {
-    warn "Unrecognised type of file!\n";
-    pod2usage( -exitstatus => 0, -verbose => 2 ) if $man;
+    warn "Unrecognised type of file - '$type_of_files'!\n";
 }
 
 if ( scalar(@files) ) {
