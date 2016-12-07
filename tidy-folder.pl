@@ -129,11 +129,11 @@ Print the file names separated by NUL for xargs -0.
 
 =item B<-help>
 
-Print a brief help message and exits.
+Print a brief help message and exit.
 
 =item B<-man>
 
-Prints the manual page and exits.
+Print the manual page and exit.
 
 =back
 
