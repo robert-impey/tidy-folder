@@ -133,7 +133,8 @@ sub find_conflict_files {
             my $file    = shift;
             my $cur_dir = shift;
 
-            if ( $file =~ /(.+)\[Conflict(?: \d+)?\](.*)/ ) {
+            # todo (hiroko's conflicted copy 2016-10-31).txt
+            if ( $file =~ /(.+) \([\.\w]+'s conflicted copy \d{4}-\d{2}-\d{2}\)(.*)/ ) {
                 my $origingl_file = "$1$2";
 
                 if ( -f $origingl_file || -d $origingl_file) {
