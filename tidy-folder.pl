@@ -15,7 +15,8 @@ find_ms_office_temporary_files
 find_conflict_files
 find_conflicted_copy_files
 find_bracket_number_files
-find_unicode_encoding_conflict_files);
+find_unicode_encoding_conflict_files
+find_vim_swp_files);
 
 my $man  = 0;
 my $help = 0;
@@ -56,6 +57,8 @@ if ( $type_of_files eq 'rsync_temporary' ) {
     @files = find_bracket_number_files($directory);
 } elsif ( $type_of_files eq 'unicode_encoding_conflict' ) {
     @files = find_unicode_encoding_conflict_files($directory);
+} elsif ( $type_of_files eq 'vim_swp' ) {
+    @files = find_vim_swp_files($directory);
 } else {
     warn "Unrecognised type of file - '$type_of_files'!\n";
 }

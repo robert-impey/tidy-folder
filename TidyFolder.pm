@@ -15,6 +15,7 @@ find_conflict_files
 find_conflicted_copy_files
 find_bracket_number_files
 find_unicode_encoding_conflict_files
+find_vim_swp_files
 );
 
 sub find_files_matching_sub {
@@ -135,9 +136,9 @@ sub find_conflict_files {
 
             # todo (hiroko's conflicted copy 2016-10-31).txt
             if ( $file =~ /(.+) \([\.\w]+'s conflicted copy \d{4}-\d{2}-\d{2}\)(.*)/ ) {
-                my $origingl_file = "$1$2";
+                my $original_file = "$1$2";
 
-                if ( -f $origingl_file || -d $origingl_file) {
+                if ( -f $original_file || -d $original_file) {
                     return "$cur_dir/$file";
                 }
             }
@@ -156,9 +157,9 @@ sub find_conflicted_copy_files {
             my $cur_dir = shift;
 
             if ( $file =~ /(.+) \(\w+'s conflicted copy (?:\d{4}-\d{2}-\d{2})(?:\s*\(\d+\))?\)(.*)/ ) {
-                my $origingl_file = "$1$2";
+                my $original_file = "$1$2";
 
-                if ( -f $origingl_file || -d $origingl_file) {
+                if ( -f $original_file || -d $original_file) {
                     return "$cur_dir/$file";
                 }
             }
@@ -177,9 +178,9 @@ sub find_bracket_number_files {
             my $cur_dir = shift;
 
             if ( $file =~ /(.+?)\s*\(\d+\)(.*)/ ) {
-                my $origingl_file = "$1$2";
+                my $original_file = "$1$2";
 
-                if ( -f $origingl_file || -d $origingl_file) {
+                if ( -f $original_file || -d $original_file) {
                     return "$cur_dir/$file";
                 }
             }
@@ -199,6 +200,26 @@ sub find_unicode_encoding_conflict_files {
 
             if ( $file =~ /^(.*) \(Unicode Encoding Conflict(?: \(\d+\))?\)\.(\w+)$/ ) {
                 if ( -f "$cur_dir/$1.$2" ) {
+                    return "$cur_dir/$file";
+                }
+            }
+        }
+    );
+}
+
+sub find_vim_swp_files {
+    my $directory = shift;
+
+    return find_files_matching_sub(
+        $directory,
+        sub {
+            my $file    = shift;
+            my $cur_dir = shift;
+
+            if ( $file =~ /\.(.+)\.swp/ ) {
+                my $original_file = "$1";
+
+                if ( -f $original_file) {
                     return "$cur_dir/$file";
                 }
             }
