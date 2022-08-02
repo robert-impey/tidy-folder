@@ -168,7 +168,6 @@ sub find_conflicted_copy_files {
 }
 
 sub find_bracket_number_files {
-
     my $directory = shift;
 
     return find_files_matching_sub(
