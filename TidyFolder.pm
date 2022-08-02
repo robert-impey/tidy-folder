@@ -7,13 +7,13 @@ use File::Find::Rule;
 
 use base 'Exporter';
 our @EXPORT_OK = qw(
-find_rsync_temporary_files
-find_superfluous_ut_files
-find_numbered_torrent_files
-find_ms_office_temporary_files
+find_bracket_number_files
 find_conflict_files
 find_conflicted_copy_files
-find_bracket_number_files
+find_ms_office_temporary_files
+find_numbered_torrent_files
+find_rsync_temporary_files
+find_superfluous_ut_files
 find_unicode_encoding_conflict_files
 find_vim_swp_files
 );
