@@ -3,20 +3,21 @@
 use strict;
 use warnings;
 
+use File::Path;
 use Getopt::Long;
 use Pod::Usage;
-use File::Path;
 
 use TidyFolder qw(
-find_rsync_temporary_files
-find_superfluous_ut_files
-find_numbered_torrent_files
-find_ms_office_temporary_files
+find_bracket_number_files
 find_conflict_files
 find_conflicted_copy_files
-find_bracket_number_files
+find_ms_office_temporary_files
+find_numbered_torrent_files
+find_rsync_temporary_files
+find_superfluous_ut_files
 find_unicode_encoding_conflict_files
-find_vim_swp_files);
+find_vim_swp_files
+);
 
 my $man  = 0;
 my $help = 0;
