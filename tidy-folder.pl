@@ -121,6 +121,7 @@ Possibly:
     conflict
     bracket_number
     unicode_encoding_conflict
+    vim_swp
 
 =item B<--delete>
 

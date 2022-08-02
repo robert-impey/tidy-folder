@@ -14,4 +14,5 @@ numbered torrent
 ms office temporary
 conflict
 bracket number
-
+unicode_encoding_conflict
+vim_swp
