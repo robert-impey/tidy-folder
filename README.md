@@ -16,3 +16,5 @@ conflict
 bracket number
 unicode_encoding_conflict
 vim_swp
+
+The program can also execute a command for each file found or print output suitable for a shell script using xargs.
