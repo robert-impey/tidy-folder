@@ -9,7 +9,6 @@ use File::Spec;
 use base 'Exporter';
 our @EXPORT_OK = qw(
   find_bracket_number_files
-  find_conflict_files
   find_conflicted_copy_files
   find_ms_office_temporary_files
   find_numbered_torrent_files
@@ -125,30 +124,6 @@ sub find_ms_office_temporary_files {
     );
 }
 
-# Dropbox
-sub find_conflict_files {
-    my $directory = shift;
-
-    return find_files_matching_sub(
-        $directory,
-        sub {
-            my $file    = shift;
-            my $cur_dir = shift;
-
-            # todo (hiroko's conflicted copy 2016-10-31).txt
-            if ( $file =~
-                /(.+) \([\.\w]+'s conflicted copy \d{4}-\d{2}-\d{2}\)(.*)/ )
-            {
-                my $original_file = "$1$2";
-
-                if ( -f $original_file || -d $original_file ) {
-                    return "$cur_dir/$file";
-                }
-            }
-        }
-    );
-}
-
 # Created by Dropbox
 sub find_conflicted_copy_files {
     my $directory = shift;
@@ -160,7 +135,7 @@ sub find_conflicted_copy_files {
             my $cur_dir = shift;
 
             if ( $file =~
-/(.+) \(\w+'s conflicted copy (?:\d{4}-\d{2}-\d{2})(?:\s*\(\d+\))?\)(.*)/
+/(.+) \(\w+'s conflicted copy (?:\d{4}-\d{2}-\d{2})(?:\s*\d+)?\)(.*)/
               )
             {
                 my $original_file = "$1$2";

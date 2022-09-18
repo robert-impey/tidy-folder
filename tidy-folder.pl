@@ -9,7 +9,6 @@ use Pod::Usage;
 
 use TidyFolder qw(
   find_bracket_number_files
-  find_conflict_files
   find_conflicted_copy_files
   find_ms_office_temporary_files
   find_numbered_torrent_files
@@ -55,9 +54,6 @@ elsif ( $type_of_files eq 'numbered_torrent' ) {
 }
 elsif ( $type_of_files eq 'ms_office_temporary' ) {
     @files = find_ms_office_temporary_files($directory);
-}
-elsif ( $type_of_files eq 'conflict' ) {
-    @files = find_conflict_files($directory);
 }
 elsif ( $type_of_files eq 'conflicted_copy' ) {
     @files = find_conflicted_copy_files($directory);
@@ -144,7 +140,7 @@ Possibly:
     superfluous_ut
     numbered_torrent
     ms_office_temporary
-    conflict
+    conflicted_copy
     bracket_number
     unicode_encoding_conflict
     vim_swp
