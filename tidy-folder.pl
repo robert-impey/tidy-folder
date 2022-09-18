@@ -123,8 +123,9 @@ __END__
         -d|directory		The directory to search
         -t|type-of-files	The type of files
         --delete			Delete the found files
-        -help	    	brief help message
-        -man	     	full documentation
+        --exec              Execute a command for each file found
+        -help	    	    brief help message
+        -man	     	    full documentation
 
 =head1 OPTIONS
 
@@ -155,6 +156,10 @@ Delete the files that match the criteria.
 =item B<--print0>
 
 Print the file names separated by NUL for xargs -0.
+
+=item B<--exec>
+
+Execute a command with each file found.
 
 =item B<-help>
 
