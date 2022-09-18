@@ -4,6 +4,7 @@ use strict;
 use warnings;
 
 use File::Find::Rule;
+use File::Spec;
 
 use base 'Exporter';
 our @EXPORT_OK = qw(
@@ -31,7 +32,7 @@ sub find_files_matching_sub {
                 if ( -f $_ || -d $_) {
                     my $matching_file = &$criteria_sub( $_, $cur_dir );
                     if ($matching_file) {
-                        push @files, $matching_file;
+                        push @files, File::Spec->canonpath( $matching_file);
                     }
                 }
             }

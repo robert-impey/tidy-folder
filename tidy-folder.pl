@@ -22,19 +22,21 @@ find_vim_swp_files
 my $man  = 0;
 my $help = 0;
 
-my ( $directory, $type_of_files, $delete, $print0 );
+my ( $directory, $type_of_files, $delete, $print0, $exec );
 
 $directory = '.';
 $print0    = 0;
 $delete    = 0;
+$exec = '';
 
 GetOptions(
     'directory=s'     => \$directory,
     'type-of-files=s' => \$type_of_files,
     'delete'            => \$delete,
     'print0'            => \$print0,
+    'exec=s' => \$exec,
     'help|?'            => \$help,
-    man                 => \$man
+    'man'                 => \$man
 ); 
 
 pod2usage(1) if $help;
@@ -65,24 +67,34 @@ if ( $type_of_files eq 'rsync_temporary' ) {
 }
 
 if ( scalar(@files) ) {
-    my $separator = $print0 ? "\0" : "\n";
 
-    print join $separator, sort(@files);
-
-    print "\n" unless $print0;
-
-    if ($delete) {
+    if ($exec) {
         foreach my $file (@files) {
-            if ( -f $file ) {
-                unlink $file;
-            } elsif ( -d $file ) {
-                rmtree($file);
-            } else {
-                warn "Unable to delete $file!\n";
-            }
-        }
+            my $c = "$exec \"$file\"";
 
-        print "Deleted!\n";
+            print $c, "\n";
+            system $c;
+        }
+    } else {
+        my $separator = $print0 ? "\0" : "\n";
+
+        print join $separator, sort(@files);
+
+        print "\n" unless $print0;
+
+        if ($delete) {
+            foreach my $file (@files) {
+                if ( -f $file ) {
+                    unlink $file;
+                } elsif ( -d $file ) {
+                    rmtree($file);
+                } else {
+                    warn "Unable to delete $file!\n";
+                }
+            }
+
+            print "Deleted!\n";
+        }
     }
 }
 
