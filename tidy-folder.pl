@@ -8,15 +8,15 @@ use Getopt::Long;
 use Pod::Usage;
 
 use TidyFolder qw(
-find_bracket_number_files
-find_conflict_files
-find_conflicted_copy_files
-find_ms_office_temporary_files
-find_numbered_torrent_files
-find_rsync_temporary_files
-find_superfluous_ut_files
-find_unicode_encoding_conflict_files
-find_vim_swp_files
+  find_bracket_number_files
+  find_conflict_files
+  find_conflicted_copy_files
+  find_ms_office_temporary_files
+  find_numbered_torrent_files
+  find_rsync_temporary_files
+  find_superfluous_ut_files
+  find_unicode_encoding_conflict_files
+  find_vim_swp_files
 );
 
 my $man  = 0;
@@ -27,42 +27,51 @@ my ( $directory, $type_of_files, $delete, $print0, $exec );
 $directory = '.';
 $print0    = 0;
 $delete    = 0;
-$exec = '';
+$exec      = '';
 
 GetOptions(
     'directory=s'     => \$directory,
     'type-of-files=s' => \$type_of_files,
-    'delete'            => \$delete,
-    'print0'            => \$print0,
-    'exec=s' => \$exec,
-    'help|?'            => \$help,
-    'man'                 => \$man
-); 
+    'delete'          => \$delete,
+    'print0'          => \$print0,
+    'exec=s'          => \$exec,
+    'help|?'          => \$help,
+    'man'             => \$man
+);
 
-pod2usage(1) if $help;
+pod2usage(1)                                 if $help;
 pod2usage( -exitstatus => 0, -verbose => 2 ) if $man or !$type_of_files;
 
 my @files;
 
 if ( $type_of_files eq 'rsync_temporary' ) {
     @files = find_rsync_temporary_files($directory);
-} elsif ( $type_of_files eq 'superfluous_ut' ) {
+}
+elsif ( $type_of_files eq 'superfluous_ut' ) {
     @files = find_superfluous_ut_files($directory);
-} elsif ( $type_of_files eq 'numbered_torrent' ) {
+}
+elsif ( $type_of_files eq 'numbered_torrent' ) {
     @files = find_numbered_torrent_files($directory);
-} elsif ( $type_of_files eq 'ms_office_temporary' ) {
+}
+elsif ( $type_of_files eq 'ms_office_temporary' ) {
     @files = find_ms_office_temporary_files($directory);
-} elsif ( $type_of_files eq 'conflict' ) {
+}
+elsif ( $type_of_files eq 'conflict' ) {
     @files = find_conflict_files($directory);
-} elsif ( $type_of_files eq 'conflicted_copy' ) {
+}
+elsif ( $type_of_files eq 'conflicted_copy' ) {
     @files = find_conflicted_copy_files($directory);
-} elsif ( $type_of_files eq 'bracket_number' ) {
+}
+elsif ( $type_of_files eq 'bracket_number' ) {
     @files = find_bracket_number_files($directory);
-} elsif ( $type_of_files eq 'unicode_encoding_conflict' ) {
+}
+elsif ( $type_of_files eq 'unicode_encoding_conflict' ) {
     @files = find_unicode_encoding_conflict_files($directory);
-} elsif ( $type_of_files eq 'vim_swp' ) {
+}
+elsif ( $type_of_files eq 'vim_swp' ) {
     @files = find_vim_swp_files($directory);
-} else {
+}
+else {
     warn "Unrecognised type of file - '$type_of_files'!\n";
 }
 
@@ -75,7 +84,8 @@ if ( scalar(@files) ) {
             print $c, "\n";
             system $c;
         }
-    } else {
+    }
+    else {
         my $separator = $print0 ? "\0" : "\n";
 
         print join $separator, sort(@files);
@@ -86,9 +96,11 @@ if ( scalar(@files) ) {
             foreach my $file (@files) {
                 if ( -f $file ) {
                     unlink $file;
-                } elsif ( -d $file ) {
+                }
+                elsif ( -d $file ) {
                     rmtree($file);
-                } else {
+                }
+                else {
                     warn "Unable to delete $file!\n";
                 }
             }
