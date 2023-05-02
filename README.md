@@ -8,12 +8,14 @@ by file sharing or back up software.
 The following files can be found:
 
 ```
-rsync temporary
-superfluous ut
-numbered torrent
-ms office temporary
+bracket_number
 conflicted_copy
-bracket number
+hyphen_backup
+ms_office_temporary
+numbered_torrent
+rsync_temporary
+superfluous_ut
+tilde_backup
 unicode_encoding_conflict
 vim_swp
 ```
