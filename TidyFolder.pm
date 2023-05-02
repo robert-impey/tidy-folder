@@ -10,13 +10,14 @@ use base 'Exporter';
 our @EXPORT_OK = qw(
   find_bracket_number_files
   find_conflicted_copy_files
+  find_hyphen_backup_files
   find_ms_office_temporary_files
   find_numbered_torrent_files
   find_rsync_temporary_files
   find_superfluous_ut_files
+  find_tilde_backup_files
   find_unicode_encoding_conflict_files
   find_vim_swp_files
-  find_tilde_backup_files
 );
 
 sub find_files_matching_sub {
@@ -199,7 +200,7 @@ sub find_vim_swp_files {
             my $file    = shift;
             my $cur_dir = shift;
 
-            if ( $file =~ /\.(.+)\.swp/ ) {
+            if ( $file =~ /\.(.+)\.swp$/ ) {
                 my $original_file = "$1";
 
                 if ( -f $original_file ) {
@@ -219,7 +220,27 @@ sub find_tilde_backup_files {
             my $file = shift;
             my $cur_dir = shift;
 
-            if ($file =~ /(.+)~/) {
+            if ($file =~ /(.+)~$/) {
+                my $original_file = "$1";
+
+                if ( -f $original_file ) {
+                    return "$cur_dir/$file";
+                }
+            }
+        }
+    );
+}
+
+sub find_hyphen_backup_files {
+    my $directory = shift;
+
+    return find_files_matching_sub(
+        $directory,
+        sub {
+            my $file = shift;
+            my $cur_dir = shift;
+
+            if ($file =~ /(.+)(?:-|--|---)$/) {
                 my $original_file = "$1";
 
                 if ( -f $original_file ) {

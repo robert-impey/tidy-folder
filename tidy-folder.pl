@@ -10,6 +10,7 @@ use Pod::Usage;
 use TidyFolder qw(
   find_bracket_number_files
   find_conflicted_copy_files
+  find_hyphen_backup_files
   find_ms_office_temporary_files
   find_numbered_torrent_files
   find_rsync_temporary_files
@@ -44,36 +45,17 @@ pod2usage( -exitstatus => 0, -verbose => 2 ) if $man or !$type_of_files;
 
 my @files;
 
-if ( $type_of_files eq 'rsync_temporary' ) {
-    @files = find_rsync_temporary_files($directory);
-}
-elsif ( $type_of_files eq 'superfluous_ut' ) {
-    @files = find_superfluous_ut_files($directory);
-}
-elsif ( $type_of_files eq 'numbered_torrent' ) {
-    @files = find_numbered_torrent_files($directory);
-}
-elsif ( $type_of_files eq 'ms_office_temporary' ) {
-    @files = find_ms_office_temporary_files($directory);
-}
-elsif ( $type_of_files eq 'conflicted_copy' ) {
-    @files = find_conflicted_copy_files($directory);
-}
-elsif ( $type_of_files eq 'bracket_number' ) {
-    @files = find_bracket_number_files($directory);
-}
-elsif ( $type_of_files eq 'unicode_encoding_conflict' ) {
-    @files = find_unicode_encoding_conflict_files($directory);
-}
-elsif ( $type_of_files eq 'vim_swp' ) {
-    @files = find_vim_swp_files($directory);
-}
-elsif ( $type_of_files eq 'tilde_backup' ) {
-    @files = find_tilde_backup_files($directory);
-}
-else {
-    warn "Unrecognised type of file - '$type_of_files'!\n";
-}
+if ( $type_of_files eq 'bracket_number' ) { @files = find_bracket_number_files($directory); }
+elsif ( $type_of_files eq 'conflicted_copy' ) { @files = find_conflicted_copy_files($directory); }
+elsif ( $type_of_files eq 'hyphen_backup' ) { @files = find_hyphen_backup_files($directory); }
+elsif ( $type_of_files eq 'ms_office_temporary' ) { @files = find_ms_office_temporary_files($directory); }
+elsif ( $type_of_files eq 'numbered_torrent' ) { @files = find_numbered_torrent_files($directory); }
+elsif ( $type_of_files eq 'rsync_temporary' ) { @files = find_rsync_temporary_files($directory); }
+elsif ( $type_of_files eq 'superfluous_ut' ) { @files = find_superfluous_ut_files($directory); }
+elsif ( $type_of_files eq 'tilde_backup' ) { @files = find_tilde_backup_files($directory); }
+elsif ( $type_of_files eq 'unicode_encoding_conflict' ) { @files = find_unicode_encoding_conflict_files($directory); }
+elsif ( $type_of_files eq 'vim_swp' ) { @files = find_vim_swp_files($directory); }
+else { warn "Unrecognised type of file - '$type_of_files'!\n"; }
 
 if ( scalar(@files) ) {
 
@@ -140,15 +122,16 @@ The name of the directory to search.
 The type of files to search for.
 
 Possibly:
+    bracket_number
+    conflicted_copy
+    hyphen_backup
+    ms_office_temporary
+    numbered_torrent
     rsync_temporary
     superfluous_ut
-    numbered_torrent
-    ms_office_temporary
-    conflicted_copy
-    bracket_number
+    tilde_backup
     unicode_encoding_conflict
     vim_swp
-    tilde_backup
 
 =item B<--delete>
 
