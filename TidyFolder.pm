@@ -16,6 +16,7 @@ our @EXPORT_OK = qw(
   find_superfluous_ut_files
   find_unicode_encoding_conflict_files
   find_vim_swp_files
+  find_tilde_backup_files
 );
 
 sub find_files_matching_sub {
@@ -199,6 +200,26 @@ sub find_vim_swp_files {
             my $cur_dir = shift;
 
             if ( $file =~ /\.(.+)\.swp/ ) {
+                my $original_file = "$1";
+
+                if ( -f $original_file ) {
+                    return "$cur_dir/$file";
+                }
+            }
+        }
+    );
+}
+
+sub find_tilde_backup_files {
+    my $directory = shift;
+
+    return find_files_matching_sub(
+        $directory,
+        sub {
+            my $file = shift;
+            my $cur_dir = shift;
+
+            if ($file =~ /(.+)~/) {
                 my $original_file = "$1";
 
                 if ( -f $original_file ) {

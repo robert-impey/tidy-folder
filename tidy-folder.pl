@@ -14,6 +14,7 @@ use TidyFolder qw(
   find_numbered_torrent_files
   find_rsync_temporary_files
   find_superfluous_ut_files
+  find_tilde_backup_files
   find_unicode_encoding_conflict_files
   find_vim_swp_files
 );
@@ -66,6 +67,9 @@ elsif ( $type_of_files eq 'unicode_encoding_conflict' ) {
 }
 elsif ( $type_of_files eq 'vim_swp' ) {
     @files = find_vim_swp_files($directory);
+}
+elsif ( $type_of_files eq 'tilde_backup' ) {
+    @files = find_tilde_backup_files($directory);
 }
 else {
     warn "Unrecognised type of file - '$type_of_files'!\n";
@@ -144,6 +148,7 @@ Possibly:
     bracket_number
     unicode_encoding_conflict
     vim_swp
+    tilde_backup
 
 =item B<--delete>
 
