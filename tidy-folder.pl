@@ -11,6 +11,7 @@ use TidyFolder qw(
   find_bracket_number_files
   find_conflicted_copy_files
   find_hyphen_backup_files
+  find_machine_name_number_files
   find_ms_office_temporary_files
   find_numbered_torrent_files
   find_rsync_temporary_files
@@ -48,6 +49,7 @@ my @files;
 if ( $type_of_files eq 'bracket_number' ) { @files = find_bracket_number_files($directory); }
 elsif ( $type_of_files eq 'conflicted_copy' ) { @files = find_conflicted_copy_files($directory); }
 elsif ( $type_of_files eq 'hyphen_backup' ) { @files = find_hyphen_backup_files($directory); }
+elsif ( $type_of_files eq 'machine_name_number' ) { @files = find_machine_name_number_files($directory); }
 elsif ( $type_of_files eq 'ms_office_temporary' ) { @files = find_ms_office_temporary_files($directory); }
 elsif ( $type_of_files eq 'numbered_torrent' ) { @files = find_numbered_torrent_files($directory); }
 elsif ( $type_of_files eq 'rsync_temporary' ) { @files = find_rsync_temporary_files($directory); }
@@ -125,6 +127,7 @@ Possibly:
     bracket_number
     conflicted_copy
     hyphen_backup
+    machine_name_number
     ms_office_temporary
     numbered_torrent
     rsync_temporary

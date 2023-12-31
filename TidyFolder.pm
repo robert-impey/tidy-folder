@@ -18,6 +18,7 @@ our @EXPORT_OK = qw(
   find_tilde_backup_files
   find_unicode_encoding_conflict_files
   find_vim_swp_files
+  find_machine_name_number_files
 );
 
 sub find_files_matching_sub {
@@ -191,16 +192,39 @@ sub find_unicode_encoding_conflict_files {
     );
 }
 
-sub find_vim_swp_files {
+# Created by OneDrive
+sub find_machine_name_number_files {
     my $directory = shift;
 
     return find_files_matching_sub(
         $directory,
         sub {
-            my $file    = shift;
+            my $file = shift;
             my $cur_dir = shift;
 
-            if ( $file =~ /\.(.+)\.swp$/ ) {
+            if ($file =~ /(.+)-(?:\w+)(?:-\d+)?(\.\w+)/) {
+                my $original_file = "$1$2";
+
+                if ( -f $original_file ) {
+                    return "$cur_dir/$file";
+                }
+            }
+        }
+    );
+}
+
+sub find_file_with_other_file_matching_regex
+{
+    my $directory = shift;
+    my $regex = shift;
+
+    return find_files_matching_sub(
+        $directory,
+        sub {
+            my $file = shift;
+            my $cur_dir = shift;
+
+            if ($file =~ $regex) {
                 my $original_file = "$1";
 
                 if ( -f $original_file ) {
@@ -209,46 +233,25 @@ sub find_vim_swp_files {
             }
         }
     );
+}
+
+sub find_vim_swp_files {
+    my $directory = shift;
+
+    return find_file_with_other_file_matching_regex($directory, "/\.(.+)\.swp$/");
 }
 
 sub find_tilde_backup_files {
     my $directory = shift;
 
-    return find_files_matching_sub(
-        $directory,
-        sub {
-            my $file = shift;
-            my $cur_dir = shift;
-
-            if ($file =~ /(.+)~$/) {
-                my $original_file = "$1";
-
-                if ( -f $original_file ) {
-                    return "$cur_dir/$file";
-                }
-            }
-        }
-    );
+    return find_file_with_other_file_matching_regex($directory, "/(.+)~$/");
 }
 
+# Created by Pop-11
 sub find_hyphen_backup_files {
     my $directory = shift;
 
-    return find_files_matching_sub(
-        $directory,
-        sub {
-            my $file = shift;
-            my $cur_dir = shift;
-
-            if ($file =~ /(.+)(?:-|--|---)$/) {
-                my $original_file = "$1";
-
-                if ( -f $original_file ) {
-                    return "$cur_dir/$file";
-                }
-            }
-        }
-    );
+    return find_file_with_other_file_matching_regex($directory, "/(.+)(?:-|--|---)$/");
 }
 
 1;
