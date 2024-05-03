@@ -1,5 +1,7 @@
 # tidy-folder
 
+Development has moved to https://github.com/robert-impey/tools
+
 Tidy up unwanted files from a folder.
 
 This tool can find the following files that might be left behind
